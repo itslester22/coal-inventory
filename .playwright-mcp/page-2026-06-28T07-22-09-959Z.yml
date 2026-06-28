@@ -1,0 +1,207 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - img [ref=e6]
+      - generic [ref=e8]: CARBONGLOW
+    - list [ref=e9]:
+      - listitem [ref=e10]:
+        - generic [ref=e11] [cursor=pointer]:
+          - img [ref=e12]
+          - generic [ref=e17]: Dashboard
+      - listitem [ref=e18]:
+        - generic [ref=e19] [cursor=pointer]:
+          - img [ref=e20]
+          - generic [ref=e23]: POS Terminal
+      - listitem [ref=e24]:
+        - generic [ref=e25] [cursor=pointer]:
+          - img [ref=e26]
+          - generic [ref=e30]: Inventory Yard
+      - listitem [ref=e31]:
+        - generic [ref=e32] [cursor=pointer]:
+          - img [ref=e33]
+          - generic [ref=e38]: Staff & Payroll
+    - generic "Click to view database connection status" [ref=e40] [cursor=pointer]:
+      - generic [ref=e42]: "DB: Demo Local"
+  - main [ref=e43]:
+    - generic [ref=e44]:
+      - generic [ref=e45]:
+        - heading "Analytics Dashboard" [level=1] [ref=e46]
+        - paragraph [ref=e47]: Real-time overview of sales margins, coal stockpiles, and operating metrics.
+      - generic [ref=e48]:
+        - img [ref=e49]
+        - generic [ref=e51]: "Today: Sun, Jun 28, 2026"
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic [ref=e55]:
+            - generic [ref=e56]: Gross Sales
+            - img [ref=e58]
+          - generic [ref=e61]:
+            - heading "$32,610" [level=2] [ref=e62]
+            - generic [ref=e63]:
+              - generic [ref=e64]:
+                - img [ref=e65]
+                - text: Active
+              - generic [ref=e68]: From 8 invoices
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - generic [ref=e71]: Net Profit
+            - img [ref=e73]
+          - generic [ref=e75]:
+            - heading "$4,362" [level=2] [ref=e76]
+            - generic [ref=e77]:
+              - generic [ref=e78]: 13.4% margin
+              - generic [ref=e79]: After costs & wages
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - generic [ref=e82]: Stock Remaining
+            - img [ref=e84]
+          - generic [ref=e88]:
+            - heading "729 Tons" [level=2] [ref=e89]
+            - generic [ref=e90]:
+              - generic [ref=e91]: $45,200
+              - generic [ref=e92]: Supplier valuation
+        - generic [ref=e93]:
+          - generic [ref=e94]:
+            - generic [ref=e95]: Payroll Disbursed
+            - img [ref=e97]
+          - generic [ref=e102]:
+            - heading "$8,898" [level=2] [ref=e103]
+            - generic [ref=e104]:
+              - generic [ref=e105]: 5 Employees
+              - generic [ref=e106]: Active on ledger
+      - generic [ref=e107]:
+        - generic [ref=e108]:
+          - generic [ref=e109]:
+            - heading "7-Day Sales & Profit Margin" [level=3] [ref=e110]
+            - generic [ref=e111]:
+              - generic [ref=e114]: Gross Revenue
+              - generic [ref=e117]: Net Sales (Margin)
+          - img [ref=e119]:
+            - generic [ref=e121]: $15,180
+            - generic [ref=e123]: $11,385
+            - generic [ref=e125]: $7,590
+            - generic [ref=e127]: $3,795
+            - generic [ref=e129]: $0
+            - generic [ref=e131]: Jun 22
+            - generic [ref=e133]: Jun 23
+            - generic [ref=e135]: Jun 24
+            - generic [ref=e137]: Jun 25
+            - generic [ref=e139]: Jun 26
+            - generic [ref=e141]: Jun 27
+            - generic [ref=e143]: Jun 28
+        - generic [ref=e176]:
+          - heading "Stock Volume by Grade" [level=3] [ref=e178]
+          - generic [ref=e179]:
+            - generic [ref=e181]:
+              - generic [ref=e182]: Anthracite
+              - generic [ref=e184]:
+                - strong [ref=e185]: 82 T
+                - generic [ref=e186]: / 100 T
+            - generic [ref=e190]:
+              - generic [ref=e191]: Bituminous
+              - generic [ref=e193]:
+                - strong [ref=e194]: 195 T
+                - generic [ref=e195]: / 250 T
+            - generic [ref=e199]:
+              - generic [ref=e200]: Sub-bituminous
+              - generic [ref=e202]:
+                - strong [ref=e203]: 12 T
+                - generic [ref=e204]: / 150 T
+            - generic [ref=e208]:
+              - generic [ref=e209]: Lignite
+              - generic [ref=e211]:
+                - strong [ref=e212]: 440 T
+                - generic [ref=e213]: / 500 T
+      - generic [ref=e216]:
+        - generic [ref=e217]:
+          - generic [ref=e218]:
+            - heading "Recent Transactions" [level=3] [ref=e219]
+            - button "Open POS" [ref=e220] [cursor=pointer]:
+              - text: Open POS
+              - img [ref=e221]
+          - table [ref=e225]:
+            - rowgroup [ref=e226]:
+              - row "Invoice Customer Grade Qty (Tons) Gross Amount Net Profit Status" [ref=e227]:
+                - columnheader "Invoice" [ref=e228]
+                - columnheader "Customer" [ref=e229]
+                - columnheader "Grade" [ref=e230]
+                - columnheader "Qty (Tons)" [ref=e231]
+                - columnheader "Gross Amount" [ref=e232]
+                - columnheader "Net Profit" [ref=e233]
+                - columnheader "Status" [ref=e234]
+            - rowgroup [ref=e235]:
+              - row "#1 Alpha Steel Works Corp Anthracite 8 T $1,480 $600 Paid" [ref=e236]:
+                - cell "#1" [ref=e237]
+                - cell "Alpha Steel Works Corp" [ref=e238]
+                - cell "Anthracite" [ref=e239]:
+                  - generic [ref=e240]: Anthracite
+                - cell "8 T" [ref=e241]
+                - cell "$1,480" [ref=e242]
+                - cell "$600" [ref=e243]
+                - cell "Paid" [ref=e244]:
+                  - generic [ref=e245]: Paid
+              - row "#2 Apex Brick & Ceramic Kiln Bituminous 25 T $3,375 $1,375 Paid" [ref=e246]:
+                - cell "#2" [ref=e247]
+                - cell "Apex Brick & Ceramic Kiln" [ref=e248]
+                - cell "Bituminous" [ref=e249]:
+                  - generic [ref=e250]: Bituminous
+                - cell "25 T" [ref=e251]
+                - cell "$3,375" [ref=e252]
+                - cell "$1,375" [ref=e253]
+                - cell "Paid" [ref=e254]:
+                  - generic [ref=e255]: Paid
+              - row "#3 Metro Power Station Bituminous 30 T $4,050 $1,650 Paid" [ref=e256]:
+                - cell "#3" [ref=e257]
+                - cell "Metro Power Station" [ref=e258]
+                - cell "Bituminous" [ref=e259]:
+                  - generic [ref=e260]: Bituminous
+                - cell "30 T" [ref=e261]
+                - cell "$4,050" [ref=e262]
+                - cell "$1,650" [ref=e263]
+                - cell "Paid" [ref=e264]:
+                  - generic [ref=e265]: Paid
+              - row "#4 Standard Iron Smelting Ltd Anthracite 10 T $1,850 $750 Paid" [ref=e266]:
+                - cell "#4" [ref=e267]
+                - cell "Standard Iron Smelting Ltd" [ref=e268]
+                - cell "Anthracite" [ref=e269]:
+                  - generic [ref=e270]: Anthracite
+                - cell "10 T" [ref=e271]
+                - cell "$1,850" [ref=e272]
+                - cell "$750" [ref=e273]
+                - cell "Paid" [ref=e274]:
+                  - generic [ref=e275]: Paid
+              - row "#5 Municipal Utility District Lignite 60 T $4,500 $1,800 Paid" [ref=e276]:
+                - cell "#5" [ref=e277]
+                - cell "Municipal Utility District" [ref=e278]
+                - cell "Lignite" [ref=e279]:
+                  - generic [ref=e280]: Lignite
+                - cell "60 T" [ref=e281]
+                - cell "$4,500" [ref=e282]
+                - cell "$1,800" [ref=e283]
+                - cell "Paid" [ref=e284]:
+                  - generic [ref=e285]: Paid
+        - generic [ref=e286]:
+          - heading "Stock Alerts" [level=3] [ref=e287]:
+            - img [ref=e288]
+            - text: Stock Alerts
+          - generic [ref=e291]:
+            - img [ref=e292]
+            - generic [ref=e294]:
+              - generic [ref=e295]: "Low Stock: Sub-bituminous"
+              - generic [ref=e296]:
+                - text: "Batch #4 from Arch has only"
+                - strong [ref=e297]: 12 Tons
+                - text: remaining.
+            - button "Restock" [ref=e298] [cursor=pointer]
+          - generic [ref=e299]:
+            - generic [ref=e300]: Valuation Summary
+            - generic [ref=e301]:
+              - generic [ref=e302]: "Estimated Retail Value:"
+              - generic [ref=e303]: $75,815
+            - generic [ref=e304]:
+              - generic [ref=e305]: "Supplier Cost Basis:"
+              - generic [ref=e306]: $45,200
+            - generic [ref=e307]:
+              - generic [ref=e308]: "Unrealized Profit Margin:"
+              - generic [ref=e309]: $30,615
