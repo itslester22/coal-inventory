@@ -14,10 +14,14 @@ service cloud.firestore {
     }
 
     // Users collection:
-    // - Anyone can read/write their own document if they are authenticated and it matches their UID.
-    // - Admins can read/write all user documents.
+    // - Users can read their own document.
+    // - Users can CREATE their own document (with role defaulting to 'user').
+    // - Only admins can UPDATE (change role) or DELETE.
     match /users/{userId} {
-      allow read, write: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == userId
+        && request.resource.data.role == 'user';
+      allow update, delete: if isAdmin();
     }
 
     // Business collections: only admins can read and write
@@ -31,6 +35,11 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
     match /payroll/{document} {
+      allow read, write: if isAdmin();
+    }
+
+    // Settings: only admins can read and write
+    match /settings/{document} {
       allow read, write: if isAdmin();
     }
   }

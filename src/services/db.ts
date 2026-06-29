@@ -339,62 +339,22 @@ const DEFAULT_PAYROLL: PayrollRecord[] = [
 
 // --- Firebase Auth Functions ---
 
-// Creates the default admin account in Firebase Auth + Firestore.
-// Only called when the user explicitly enters admin credentials and the
-// account is confirmed to not exist yet — no unauthenticated reads needed.
-const _seedDefaultAdmin = async (): Promise<void> => {
-  const email = 'admin@ulingnife.com';
-  const password = 'admin123';
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const authUser = userCredential.user;
-    // Now that we're authenticated as the new user, writing to users/{uid}
-    // is allowed by Firestore rules (request.auth.uid == userId).
-    const userDocRef = doc(db, 'users', authUser.uid);
-    await setDoc(userDocRef, {
-      username: 'admin',
-      email,
-      role: 'admin',
-      createdAt: new Date().toISOString()
-    });
-    console.log('Default admin seeded successfully.');
-  } catch (err: any) {
-    if (err.code !== 'auth/email-already-in-use') {
-      throw err;
-    }
-    // Already exists — that's fine, proceed to sign-in below.
-  }
-};
-
-// Keep the named export so nothing else breaks if it's imported elsewhere.
-export const seedDefaultAdmin = _seedDefaultAdmin;
-
 export const loginUser = async (usernameOrEmail: string, password: string): Promise<User | null> => {
-  const ADMIN_EMAIL = 'admin@ulingnife.com';
-
-  // Map plain username to email. Only the known admin username can be resolved
-  // without an authenticated Firestore read.
+  // Normalize input: if it's not an email, treat the input as the email directly.
+  // Firebase Auth requires email-based sign-in.
   const email = usernameOrEmail.includes('@')
     ? usernameOrEmail
-    : usernameOrEmail === 'admin'
-      ? ADMIN_EMAIL
-      : usernameOrEmail;
+    : `${usernameOrEmail}@localhost.local`;
+  // Note: username-only login is not supported because Firebase Auth uses
+  // email-based authentication. Admin users must be created in the Firebase
+  // Console with an email address and sign in using that email.
 
-  // Attempt sign-in first — no unauthenticated DB reads needed.
   let authUser;
   try {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     authUser = cred.user;
   } catch (err: any) {
-    // Account missing + default admin credentials → seed and retry once.
-    const notFound = err.code === 'auth/user-not-found' || err.code === 'auth/invalid-credential';
-    if (notFound && email === ADMIN_EMAIL && password === 'admin123') {
-      await _seedDefaultAdmin();
-      const retry = await signInWithEmailAndPassword(auth, email, password);
-      authUser = retry.user;
-    } else {
-      throw err;
-    }
+    throw err;
   }
 
   // We are now authenticated — Firestore rules allow reading our own document.
@@ -421,7 +381,7 @@ export const loginUser = async (usernameOrEmail: string, password: string): Prom
   }
 };
 
-export const registerUser = async (username: string, email: string, password: string, role: 'admin' | 'staff' | 'user' = 'user'): Promise<User> => {
+export const registerUser = async (username: string, email: string, password: string): Promise<User> => {
   // Check if username is already taken in Firestore
   const usersRef = collection(db, 'users');
   const qUsername = query(usersRef, where('username', '==', username));
@@ -434,12 +394,13 @@ export const registerUser = async (username: string, email: string, password: st
   const userCredential = await createUserWithEmailAndPassword(auth, email, password);
   const authUser = userCredential.user;
 
-  // Write profile to Firestore
+  // Write profile to Firestore — role is always 'user'; admin accounts
+  // must be created through the Firebase Console.
   const userDocRef = doc(db, 'users', authUser.uid);
   const newUserData = {
     username,
     email,
-    role,
+    role: 'user' as const,
     createdAt: new Date().toISOString()
   };
   await setDoc(userDocRef, newUserData);
@@ -743,7 +704,7 @@ export const setupFirebaseDefaultData = async (): Promise<boolean> => {
 
 export const clearAllData = async (): Promise<boolean> => {
   try {
-    const collections = ['inventory', 'sales', 'employees', 'payroll', 'users'];
+    const collections = ['inventory', 'sales', 'employees', 'payroll'];
     for (const colName of collections) {
       const snap = await getDocs(collection(db, colName));
       for (const docObj of snap.docs) {

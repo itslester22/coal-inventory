@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Flame, User as UserIcon, Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { Flame, Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { loginUser, registerUser } from '../services/db';
 import type { User } from '../types';
 
@@ -9,28 +9,33 @@ interface LoginProps {
 
 export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true);
-  const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<string | null>(null);
 
-
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
-    
-    if (!username.trim()) {
-      setError('Username is required.');
-      return;
-    }
-    if (!isLoginMode && !email.trim()) {
-      setError('Email is required.');
-      return;
+
+    if (isLoginMode) {
+      if (!email.trim()) {
+        setError('Email is required.');
+        return;
+      }
+    } else {
+      if (!username.trim()) {
+        setError('Username is required.');
+        return;
+      }
+      if (!email.trim()) {
+        setError('Email is required.');
+        return;
+      }
     }
     if (!password) {
       setError('Password is required.');
@@ -40,17 +45,15 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     setLoading(true);
     try {
       if (isLoginMode) {
-        // Sign in
-        const user = await loginUser(username.trim(), password);
+        const user = await loginUser(email.trim(), password);
         if (user) {
           onLoginSuccess(user);
         } else {
-          setError('Invalid username/email or password.');
+          setError('Invalid email or password.');
         }
       } else {
-        // Register new user account
         await registerUser(username.trim(), email.trim(), password);
-        setSuccess('Account created. Only admins can log in.');
+        setSuccess('Account created. An admin must promote you in Firebase Console.');
         setIsLoginMode(true);
         setPassword('');
       }
@@ -150,46 +153,91 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
           )}
 
-          {/* Username Input */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
-              Username
-            </label>
-            <div style={{ position: 'relative' }}>
-              <div style={{
-                position: 'absolute',
-                left: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--text-muted)',
-                display: 'flex',
-                alignItems: 'center'
-              }}>
-                <UserIcon size={16} />
+          {/* Email Input (Sign In) */}
+          {isLoginMode && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                Email Address
+              </label>
+              <div style={{ position: 'relative' }}>
+                <div style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <Mail size={16} />
+                </div>
+                <input
+                  type="email"
+                  placeholder="admin@ulingnife.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.5rem',
+                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    border: '1px solid rgba(255, 96, 151, 0.1)',
+                    borderRadius: 'var(--border-radius-sm)',
+                    color: 'var(--text-main)',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(255, 96, 151, 0.1)'}
+                />
               </div>
-              <input
-                type="text"
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                style={{
-                  width: '100%',
-                  padding: '0.75rem 1rem 0.75rem 2.5rem',
-                  backgroundColor: 'rgba(0, 0, 0, 0.2)',
-                  border: '1px solid rgba(255, 96, 151, 0.1)',
-                  borderRadius: 'var(--border-radius-sm)',
-                  color: 'var(--text-main)',
-                  fontSize: '0.9rem',
-                  outline: 'none',
-                  transition: 'border-color 0.2s',
-                  boxSizing: 'border-box'
-                }}
-                onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
-                onBlur={(e) => e.target.style.borderColor = 'rgba(255, 96, 151, 0.1)'}
-              />
             </div>
-          </div>
+          )}
+
+          {/* Username Input (Register Only) */}
+          {!isLoginMode && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+              <label style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 500 }}>
+                Username
+              </label>
+              <div style={{ position: 'relative' }}>
+                <div style={{
+                  position: 'absolute',
+                  left: '12px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  color: 'var(--text-muted)',
+                  display: 'flex',
+                  alignItems: 'center'
+                }}>
+                  <Mail size={16} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Choose a username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  style={{
+                    width: '100%',
+                    padding: '0.75rem 1rem 0.75rem 2.5rem',
+                    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+                    border: '1px solid rgba(255, 96, 151, 0.1)',
+                    borderRadius: 'var(--border-radius-sm)',
+                    color: 'var(--text-main)',
+                    fontSize: '0.9rem',
+                    outline: 'none',
+                    transition: 'border-color 0.2s',
+                    boxSizing: 'border-box'
+                  }}
+                  onFocus={(e) => e.target.style.borderColor = 'var(--color-primary)'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(255, 96, 151, 0.1)'}
+                />
+              </div>
+            </div>
+          )}
 
           {/* Email Input (Register Only) */}
           {!isLoginMode && (

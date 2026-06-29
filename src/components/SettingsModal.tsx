@@ -207,7 +207,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ businessSettings, 
             {showResetSection && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                  Permanently wipes <strong style={{ color: '#fff' }}>all</strong> inventory batches, sales records, employees, and payroll data.
+                  Permanently wipes <strong style={{ color: '#fff' }}>all</strong> inventory batches, sales records, employees, and payroll data. User accounts are preserved.
                   Enter the superadmin password to proceed.
                 </p>
 
