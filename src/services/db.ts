@@ -756,3 +756,32 @@ export const clearAllData = async (): Promise<boolean> => {
     return false;
   }
 };
+
+export interface BusinessSettings {
+  businessName: string;
+  businessAddress: string;
+  businessPhone: string;
+}
+
+export const getBusinessSettingsFromDB = async (): Promise<BusinessSettings> => {
+  try {
+    const docRef = doc(db, 'settings', 'business');
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data() as BusinessSettings;
+    }
+  } catch (err) {
+    console.error('Failed to get business settings from Firestore:', err);
+  }
+  return {
+    businessName: 'ULING NI FE',
+    businessAddress: '100 Industrial Bulk Ave, Suite 400',
+    businessPhone: '+63 (2) 812-3456'
+  };
+};
+
+export const saveBusinessSettingsToDB = async (settings: BusinessSettings): Promise<void> => {
+  const docRef = doc(db, 'settings', 'business');
+  await setDoc(docRef, settings);
+};
+

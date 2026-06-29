@@ -5,14 +5,16 @@ import {
   getEmployees, 
   getPayroll,
   logoutUser,
-  onAuthStateChangedListener
+  onAuthStateChangedListener,
+  getBusinessSettingsFromDB,
+  type BusinessSettings
 } from './services/db';
 import type { CoalBatch, SaleTransaction, Employee, PayrollRecord, User } from './types';
 import { Dashboard } from './components/Dashboard';
 import { POS } from './components/POS';
 import { Inventory } from './components/Inventory';
 import { Payroll } from './components/Payroll';
-import { FirebaseConfigModal } from './components/FirebaseConfigModal';
+import { SettingsModal } from './components/SettingsModal';
 import { Login } from './components/Login';
 
 // Icons
@@ -26,7 +28,8 @@ import {
   Menu,
   Sun,
   Moon,
-  LogOut
+  LogOut,
+  Settings
 } from 'lucide-react';
 
 export const App: React.FC = () => {
@@ -49,6 +52,11 @@ export const App: React.FC = () => {
   const [sales, setSales] = useState<SaleTransaction[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [payroll, setPayroll] = useState<PayrollRecord[]>([]);
+  const [businessSettings, setBusinessSettings] = useState<BusinessSettings>({
+    businessName: 'ULING NI FE',
+    businessAddress: '100 Industrial Bulk Ave, Suite 400',
+    businessPhone: '+63 (2) 812-3456'
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
@@ -82,16 +90,18 @@ export const App: React.FC = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const [bData, sData, eData, pData] = await Promise.all([
+        const [bData, sData, eData, pData, settingsData] = await Promise.all([
           getBatches(),
           getSales(),
           getEmployees(),
-          getPayroll()
+          getPayroll(),
+          getBusinessSettingsFromDB()
         ]);
         setBatches(bData);
         setSales(sData);
         setEmployees(eData);
         setPayroll(pData);
+        setBusinessSettings(settingsData);
       } catch (err) {
         console.error('Failed to load application data', err);
       } finally {
@@ -314,16 +324,17 @@ export const App: React.FC = () => {
             </button>
           </div>
 
-          <div 
-            className="db-status-badge firebase"
+          <div
+            className="nav-item"
             onClick={() => {
               setShowConfigModal(true);
               setIsMobileMenuOpen(false);
             }}
-            title="Click to view database connection status"
+            title="Open system settings"
+            style={{ cursor: 'pointer' }}
           >
-            <span className="status-dot" />
-            <span>DB: Firestore Sync</span>
+            <Settings size={18} />
+            <span>Settings</span>
           </div>
         </div>
       </aside>
@@ -391,6 +402,7 @@ export const App: React.FC = () => {
               <POS 
                 batches={batches}
                 sales={sales}
+                businessSettings={businessSettings}
                 onRefreshData={handleRefresh}
               />
             )}
@@ -411,9 +423,10 @@ export const App: React.FC = () => {
         )}
       </main>
 
-      {/* Database settings modal */}
+      {/* Settings modal */}
       {showConfigModal && (
-        <FirebaseConfigModal 
+        <SettingsModal
+          businessSettings={businessSettings}
           onClose={() => setShowConfigModal(false)}
           onRefreshData={handleRefresh}
         />

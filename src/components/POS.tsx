@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import type { CoalBatch, SaleTransaction } from '../types';
 import { addSale, updateSaleStatus, deleteSale } from '../services/db';
+import type { BusinessSettings } from '../services/db';
 import { ShoppingBag, Search, Plus, Printer, Trash2, Eye, Info, CheckCircle, AlertTriangle } from 'lucide-react';
 
 interface POSProps {
   batches: CoalBatch[];
   sales: SaleTransaction[];
+  businessSettings: BusinessSettings;
   onRefreshData: () => void;
 }
 
-export const POS: React.FC<POSProps> = ({ batches, sales, onRefreshData }) => {
+export const POS: React.FC<POSProps> = ({ batches, sales, businessSettings, onRefreshData }) => {
   // POS Form State
   const [customerName, setCustomerName] = useState('');
   const [customerPhone, setCustomerPhone] = useState('');
@@ -33,6 +35,9 @@ export const POS: React.FC<POSProps> = ({ batches, sales, onRefreshData }) => {
 
   // Available batches that actually have stock
   const stockBatches = batches.filter(b => b.currentQuantity > 0);
+
+  // Business info from settings prop
+  const biz = businessSettings;
   const selectedBatch = batches.find(b => b.id === selectedBatchId);
 
   // Dynamic filter dropdown list from actual sales
@@ -478,11 +483,11 @@ export const POS: React.FC<POSProps> = ({ batches, sales, onRefreshData }) => {
               <div className="invoice-header">
                 <div>
                   <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: '1.5rem', letterSpacing: '-0.5px', color: '#111827' }}>
-                    ULING NI FE POS
+                    {biz.businessName}
                   </h2>
                   <p style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
-                    100 Industrial Bulk Ave, Suite 400<br />
-                    Manila, Philippines | +63 (2) 812-3456
+                    {biz.businessAddress}<br />
+                    {biz.businessPhone}
                   </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -611,10 +616,10 @@ export const POS: React.FC<POSProps> = ({ batches, sales, onRefreshData }) => {
               <div className="receipt-content">
                 {/* Header */}
                 <div className="receipt-header">
-                  <div className="receipt-company">ULING NI FE</div>
+                  <div className="receipt-company">{biz.businessName}</div>
                   <div className="receipt-tagline">Coal & Industrial Supply</div>
-                  <div className="receipt-address">100 Industrial Bulk Ave, Suite 400</div>
-                  <div className="receipt-address">Manila, Philippines | +63 (2) 812-3456</div>
+                  <div className="receipt-address">{biz.businessAddress}</div>
+                  <div className="receipt-address">{biz.businessPhone}</div>
                 </div>
 
                 <div className="receipt-separator" />
